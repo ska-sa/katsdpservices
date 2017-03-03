@@ -5,7 +5,8 @@ tests_require = ['mock', 'nose', 'unittest2', 'six']
 
 setup(
     name="katsdpservices",
-    description="common code used by services that make up the telescope system, such as a common logging setup",
+    description=("common code used by services that make up the telescope system, "
+                 "such as a common logging setup"),
     author="Bruce Merry",
     author_email="bmerry@ska.ac.za",
     packages=find_packages(),

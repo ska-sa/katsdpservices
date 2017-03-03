@@ -5,7 +5,6 @@ import time
 import logging
 import os
 import re
-import time
 import signal
 import mock
 import unittest2 as unittest
@@ -31,7 +30,8 @@ class TestLogging(unittest.TestCase):
         self.stderr = self._create_patch('sys.stderr', new_callable=six.StringIO)
         # Point root away from the actual root logger, so that we don't break
         # that.
-        self.logger = self._create_patch('logging.root', logging.getLogger('katsdpservices.test.dummy'))
+        self.logger = self._create_patch(
+            'logging.root', logging.getLogger('katsdpservices.test.dummy'))
         # Wipe out existing environment, so that we can poke KATSDP_LOG_*
         self.environ = self._create_patch_dict(os.environ, clear=True)
         # Override time so that we can compare against a known value
