@@ -1,7 +1,6 @@
 """Tests for :mod:`katsdpservices.restart`"""
 
 from __future__ import print_function, division, absolute_import
-import sys
 import mock
 import os
 import signal

@@ -42,6 +42,7 @@ def setup_restart(signum=signal.SIGHUP, restart_callback=None):
             if restart_callback():
                 return
         restart_process()
+
     def restart_handler(signum, frame):
         # It's not safe to log directly from a signal handler, so start
         # a separate thread to do the shutdown.
