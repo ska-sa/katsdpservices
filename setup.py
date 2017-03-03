@@ -12,6 +12,6 @@ setup(
     setup_requires=["katversion"],
     install_requires=[],
     tests_require=tests_require,
-    extra_require={'test': tests_require},
+    extra_require={"argparse": ["katsdptelstate"], "test": tests_require},
     use_katversion=True
 )

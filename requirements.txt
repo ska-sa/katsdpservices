@@ -1,1 +1,4 @@
-# Empty for now: no dependencies
+redis
+netifaces
+numpy
+git+ssh://git@github.com/ska-sa/katsdptelstate#egg=katsdptelstate
