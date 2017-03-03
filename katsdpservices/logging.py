@@ -7,7 +7,7 @@ KATSDP_LOG_ONELINE: if set (to any value), newlines in log messages are escaped
 KATSDP_LOG_LEVEL: if set, it is used as the name of the log level. Otherwise,
   the log level defaults to INFO.
 
-A signal handler is installed that toggles debug-level logging when SIGUSR1 is
+A signal handler is installed that toggles debug-level logging when SIGUSR2 is
 received.
 """
 
@@ -74,4 +74,4 @@ def setup_logging(add_signal_handler=True):
     else:
         logging.root.setLevel(logging.INFO)
     if add_signal_handler:
-        signal.signal(signal.SIGUSR1, lambda signum, frame: toggle_debug())
+        signal.signal(signal.SIGUSR2, lambda signum, frame: toggle_debug())

@@ -85,11 +85,11 @@ class TestLogging(unittest.TestCase):
 
     def test_toggle_debug(self):
         self.assertEqual(logging.INFO, logging.root.level)
-        os.kill(os.getpid(), signal.SIGUSR1)
+        os.kill(os.getpid(), signal.SIGUSR2)
         # Give it a bit of time, since it's done in a separate thread
         time.sleep(0.01)
         self.assertEqual(logging.DEBUG, logging.root.level)
         # Check that it toggles back again
-        os.kill(os.getpid(), signal.SIGUSR1)
+        os.kill(os.getpid(), signal.SIGUSR2)
         time.sleep(0.01)
         self.assertEqual(logging.INFO, logging.root.level)
