@@ -5,6 +5,8 @@ import time
 import logging
 import os
 import re
+import time
+import signal
 import mock
 import unittest2 as unittest
 import six
@@ -35,6 +37,7 @@ class TestLogging(unittest.TestCase):
         # Override time so that we can compare against a known value
         self.time = self._create_patch('time.time', autospec=True)
         self.time.return_value = 1488463323.125
+        self.addCleanup(signal.signal, signal.SIGHUP, signal.SIG_DFL)
 
     def test_simple(self):
         katsdpservices.setup_logging()
@@ -79,3 +82,14 @@ class TestLogging(unittest.TestCase):
                 "2017-03-02T14:02:03.125Z - test_logging.py:\\d+ - WARNING - warning message\n"
                 "with\n"
                 "newlines\n\\Z", re.M))
+
+    def test_toggle_debug(self):
+        self.assertEqual(logging.INFO, logging.root.level)
+        os.kill(os.getpid(), signal.SIGUSR1)
+        # Give it a bit of time, since it's done in a separate thread
+        time.sleep(0.01)
+        self.assertEqual(logging.DEBUG, logging.root.level)
+        # Check that it toggles back again
+        os.kill(os.getpid(), signal.SIGUSR1)
+        time.sleep(0.01)
+        self.assertEqual(logging.INFO, logging.root.level)

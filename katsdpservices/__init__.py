@@ -13,4 +13,4 @@ else:
 
 
 from .logging import setup_logging
-from .restart import setup_restart
+from .restart import setup_restart, restart_process

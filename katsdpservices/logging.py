@@ -6,12 +6,21 @@ KATSDP_LOG_ONELINE: if set (to any value), newlines in log messages are escaped
   to fit the message onto a single line (see :class:`OnelineFormatter`).
 KATSDP_LOG_LEVEL: if set, it is used as the name of the log level. Otherwise,
   the log level defaults to INFO.
+
+A signal handler is installed that toggles debug-level logging when SIGUSR1 is
+received.
 """
 
 from __future__ import print_function, division, absolute_import
 import logging
 import os
 import time
+import signal
+import threading
+
+
+_toggle_next_level = logging.DEBUG
+"""Log level to set on next call to :func:`toggle_debug`."""
 
 
 class OnelineFormatter(logging.Formatter):
@@ -24,7 +33,31 @@ class OnelineFormatter(logging.Formatter):
         return s.replace('\\', r'\\').replace('\n', r'\ ')
 
 
-def setup_logging():
+def toggle_debug():
+    """Swap current log level with the saved log level."""
+    global _toggle_next_level
+    old = logging.root.level
+    logging.info(
+        'Changing log level from %s to %s',
+        logging.getLevelName(old), logging.getLevelName(_toggle_next_level))
+    logging.root.setLevel(_toggle_next_level)
+    _toggle_next_level = old
+
+
+def _toggle_debug_handler(signum, frame):
+    """Signal handler that calls :func:`toggle_debug` asynchronously.
+
+    It's not safe to manipulate logging if the signal was received during a
+    logging call. Instead, start a separate thread, and rely on logging's
+    locking to do this change safely.
+    """
+    thread = threading.Thread(target=toggle_debug)
+    thread.daemon = True
+    thread.start()
+
+
+def setup_logging(add_signal_handler=True):
+    """Prepare logging. See the module-level documentation for details."""
     if 'KATSDP_LOG_ONELINE' in os.environ:
         formatter_class = OnelineFormatter
     else:
@@ -40,3 +73,5 @@ def setup_logging():
         logging.root.setLevel(os.environ['KATSDP_LOG_LEVEL'].upper())
     else:
         logging.root.setLevel(logging.INFO)
+    if add_signal_handler:
+        signal.signal(signal.SIGUSR1, lambda signum, frame: toggle_debug())
