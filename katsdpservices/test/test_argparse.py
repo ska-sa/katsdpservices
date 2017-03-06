@@ -3,7 +3,7 @@
 from __future__ import print_function, division, absolute_import
 import mock
 import unittest2 as unittest
-from katsdpservices.argparse import ArgumentParser
+from katsdpservices import ArgumentParser
 
 
 class MockException(Exception):

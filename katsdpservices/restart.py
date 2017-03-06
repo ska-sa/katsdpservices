@@ -18,7 +18,7 @@ def restart_process():
     # Ensure any logging gets properly flushed
     sys.stdout.flush()
     sys.stderr.flush()
-    os.execlp(sys.executable, _restart_args[0], *_restart_args)
+    os.execlp(sys.executable, sys.executable, *_restart_args)
 
 
 def setup_restart(signum=signal.SIGHUP, restart_callback=None):
