@@ -73,5 +73,6 @@ def setup_logging(add_signal_handler=True):
         logging.root.setLevel(os.environ['KATSDP_LOG_LEVEL'].upper())
     else:
         logging.root.setLevel(logging.INFO)
+    logging.captureWarnings(True)
     if add_signal_handler:
         signal.signal(signal.SIGUSR2, lambda signum, frame: toggle_debug())
