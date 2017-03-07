@@ -2,6 +2,7 @@
 from __future__ import print_function, division, absolute_import
 import sys
 import os.path
+import fcntl
 import signal
 import logging
 import threading
@@ -11,10 +12,31 @@ import threading
 # and makes a relative path invalid.
 _restart_args = list(sys.argv)
 _restart_args[0] = os.path.abspath(sys.argv[0])
+_logger = logging.getLogger(__name__)
 
 
 def restart_process():
     """Re-exec the process with its original arguments"""
+    # Set file handles to close on exec, so that sockets don't live on
+    # and prevent us opening the ports again.
+    try:
+        for name in os.listdir('/proc/self/fd'):
+            try:
+                fd = int(name)
+            except ValueError:
+                pass
+            else:
+                if fd > 2:   # Don't close stdin/stdout/stderr
+                    try:
+                        flags = fcntl.fcntl(fd, fcntl.F_GETFD)
+                        fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
+                    except (OSError, IOError):
+                        # This is guaranteed to happen, because the fd used by
+                        # os.listdir will be in the list, but is closed by the
+                        # time we try to change the flags on it.
+                        pass
+    except (OSError, IOError):
+        logging.warn('Could not read /proc/self/fd')
     # Ensure any logging gets properly flushed
     sys.stdout.flush()
     sys.stderr.flush()
