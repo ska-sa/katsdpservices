@@ -5,8 +5,11 @@ See :class:`ArgumentParser` for details.
 
 from __future__ import print_function, division, absolute_import
 import argparse
-import katsdptelstate
-import redis
+try:
+    import katsdptelstate
+    import redis
+except ImportError:
+    pass
 
 
 class _HelpAction(argparse.Action):
