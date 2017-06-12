@@ -3,10 +3,7 @@
 This is a simple wrapper around :mod:`netifaces`.
 """
 
-try:
-    import netifaces
-except ImportError:
-    pass
+import netifaces
 
 
 def get_interface_address(interface):
