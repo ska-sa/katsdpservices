@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-tests_require = ['mock', 'nose', 'unittest2', 'six']
+tests_require = ['mock', 'nose', 'unittest2', 'six', 'katsdptelstate']
 
 setup(
     name="katsdpservices",
@@ -11,8 +11,10 @@ setup(
     author_email="bmerry@ska.ac.za",
     packages=find_packages(),
     setup_requires=["katversion"],
-    install_requires=[],
+    install_requires=["netifaces"],
     tests_require=tests_require,
-    extra_require={"argparse": ["katsdptelstate"], "test": tests_require},
+    extra_require={
+        "argparse": ["katsdptelstate"],
+        "test": tests_require},
     use_katversion=True
 )
