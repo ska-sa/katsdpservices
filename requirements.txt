@@ -1,5 +1,13 @@
+backports-abc
+backports.ssl-match-hostname
+certifi
 fakeredis
+futures
 redis
 netifaces
 numpy
+singledispatch
+six
+tornado
+trollius
 git+ssh://git@github.com/ska-sa/katsdptelstate#egg=katsdptelstate
