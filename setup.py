@@ -13,7 +13,7 @@ setup(
     setup_requires=["katversion"],
     install_requires=["netifaces"],
     tests_require=tests_require,
-    extra_require={
+    extras_require={
         "argparse": ["katsdptelstate"],
         "asyncio": ["tornado", "trollius"],
         "test": tests_require},
