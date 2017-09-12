@@ -3,6 +3,7 @@ backports.ssl-match-hostname
 certifi
 fakeredis
 futures
+ipaddress
 redis
 netifaces
 numpy
