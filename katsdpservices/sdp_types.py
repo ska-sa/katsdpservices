@@ -1,7 +1,7 @@
 """Various resolvers, type definitions and enum used across the SDP system."""
 
 
-STREAM_TYPES = {'sdp_l0': 'sdp.l0',
+STREAM_TYPES = {'sdp_l0': 'sdp.vis',
                 'sdp_l1_flags': 'sdp.flags'
                 }
 
