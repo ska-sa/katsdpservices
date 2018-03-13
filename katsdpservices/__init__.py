@@ -16,4 +16,3 @@ from .logging import setup_logging
 from .restart import setup_restart, restart_process
 from .argparse import ArgumentParser
 from .interfaces import get_interface_address
-from .sdp_types import stream_type
