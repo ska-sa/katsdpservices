@@ -11,7 +11,7 @@ setup(
     author_email="bmerry@ska.ac.za",
     packages=find_packages(),
     setup_requires=["katversion"],
-    install_requires=["netifaces"],
+    install_requires=["netifaces", "graypy"],
     tests_require=tests_require,
     extras_require={
         "argparse": ["katsdptelstate"],

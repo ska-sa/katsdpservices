@@ -6,6 +6,13 @@ KATSDP_LOG_ONELINE: if set (to any value), newlines in log messages are escaped
   to fit the message onto a single line (see :class:`OnelineFormatter`).
 KATSDP_LOG_LEVEL: if set, it is used as the name of the log level. Otherwise,
   the log level defaults to INFO.
+KATSDP_LOG_GELF_ADDRESS: if set (to a host:port), logging is sent over UDP
+  to this address in Graylog Extended Logging Format.
+KATSDP_LOG_GELF_LOCALNAME: if set, this overrides the local system name used
+  in GELF log messages
+KATSDP_LOG_GELF_EXTRA: set to a JSON dictionary (containing only strings and
+  numbers, and with keys matching ``^[\w\.\-]*$``) of extra values to pass in
+  every log message.
 
 A signal handler is installed that toggles debug-level logging when SIGUSR2 is
 received.
@@ -17,6 +24,9 @@ import os
 import time
 import signal
 import threading
+import json
+
+import graypy
 
 
 _toggle_next_level = logging.DEBUG
@@ -56,8 +66,7 @@ def _toggle_debug_handler(signum, frame):
     thread.start()
 
 
-def setup_logging(add_signal_handler=True):
-    """Prepare logging. See the module-level documentation for details."""
+def _setup_logging_stderr():
     if 'KATSDP_LOG_ONELINE' in os.environ:
         formatter_class = OnelineFormatter
     else:
@@ -69,6 +78,43 @@ def setup_logging(add_signal_handler=True):
     sh = logging.StreamHandler()
     sh.setFormatter(formatter)
     logging.root.addHandler(sh)
+
+
+class StaticExtraFilter(logging.Filter):
+    """Filter that adds preconfigured fields to all log records"""
+    def __init__(self, extra):
+        self._extra = extra
+
+    def filter(self, record):
+        for key, value in self._extra.items():
+            setattr(record, key, value)
+        return record
+
+
+def _setup_logging_gelf():
+    parts = os.environ['KATSDP_LOG_GELF_ADDRESS'].rsplit(':', 1)
+    host = parts[0]
+    if len(parts) == 2:
+        port = int(parts[1])
+    else:
+        port = 12201     # Default GELF port
+    localname = os.environ.get('KATSDP_LOG_GELF_LOCALNAME')
+    handler = graypy.GELFHandler(host, port, localname=localname)
+    logging.root.addHandler(handler)
+
+    extras = os.environ.get('KATSDP_LOG_GELF_EXTRA', '{}')
+    extras = json.loads(extras)
+    if not isinstance(extras, dict):
+        raise ValueError('KATSDP_LOG_GELF_EXTRA must be a JSON dict')
+    if extras:
+        handler.addFilter(StaticExtraFilter(extras))
+
+
+def setup_logging(add_signal_handler=True):
+    """Prepare logging. See the module-level documentation for details."""
+    if 'KATSDP_LOG_GELF_ADDRESS' in os.environ:
+        _setup_logging_gelf()
+    _setup_logging_stderr()
     if 'KATSDP_LOG_LEVEL' in os.environ:
         logging.root.setLevel(os.environ['KATSDP_LOG_LEVEL'].upper())
     else:
