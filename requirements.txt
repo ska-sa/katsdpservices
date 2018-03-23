@@ -1,7 +1,7 @@
 backports-abc
 backports.ssl-match-hostname
 certifi
-fakenewsredis
+fakeredis
 futures
 ipaddress
 redis
