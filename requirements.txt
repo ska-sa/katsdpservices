@@ -3,7 +3,7 @@ backports.ssl-match-hostname
 certifi
 fakeredis
 futures
-graypy
+graypy==0.2.14
 ipaddress
 redis
 netifaces
