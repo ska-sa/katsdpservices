@@ -3,11 +3,11 @@ backports.ssl-match-hostname
 certifi
 fakeredis
 futures
-graypy==0.2.14
 ipaddress
 redis
 netifaces
 numpy
+pygelf==0.3.3
 singledispatch
 six
 tornado

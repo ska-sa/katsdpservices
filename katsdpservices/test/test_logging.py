@@ -117,18 +117,15 @@ class TestLogging(unittest.TestCase):
         # This dictionary may need to be updated depending on the implementation
         expected = {
             u"timestamp": self.time.return_value,
-            u"version": u"1.0",
+            u"version": u"1.1",
             u"short_message": u"info message",
-            u"full_message": u"info message",
-            u"facility": u"katsdpservices.test.dummy",
-            u"file": mock.ANY,
-            u"line": mock.ANY,
+            u"_logger_name": u"katsdpservices.test.dummy",
+            u"_file": mock.ANY,
+            u"_line": mock.ANY,
+            u"_func": u"_test_gelf",
+            u"_module": u"test_logging",
             u"level": 6,
-            u"host": u"myhost" if localname else mock.ANY,
-            u"_function": u"_test_gelf",
-            u"_thread_name": u"MainThread",
-            u"_process_name": u"MainProcess",
-            u"_pid": mock.ANY,
+            u"host": u"myhost" if localname else mock.ANY
         }
         if extra:
             expected[u"_hello"] = u"world"

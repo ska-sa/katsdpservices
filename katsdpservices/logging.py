@@ -26,7 +26,7 @@ import signal
 import threading
 import json
 
-import graypy
+import pygelf
 
 
 _toggle_next_level = logging.DEBUG
@@ -99,15 +99,19 @@ def _setup_logging_gelf():
     else:
         port = 12201     # Default GELF port
     localname = os.environ.get('KATSDP_LOG_GELF_LOCALNAME')
-    handler = graypy.GELFHandler(host, port, localname=localname)
-    logging.root.addHandler(handler)
-
     extras = os.environ.get('KATSDP_LOG_GELF_EXTRA', '{}')
     extras = json.loads(extras)
     if not isinstance(extras, dict):
         raise ValueError('KATSDP_LOG_GELF_EXTRA must be a JSON dict')
-    if extras:
-        handler.addFilter(StaticExtraFilter(extras))
+    # pygelf wants the additional fields to have _ already prepended
+    extras = {'_' + key: value for (key, value) in extras.items()}
+
+    handler = pygelf.GelfUdpHandler(host, port,
+                                    debug=True, include_extra_fields=True, compress=True,
+                                    static_fields=extras)
+    if localname:
+        handler.domain = localname
+    logging.root.addHandler(handler)
 
 
 def setup_logging(add_signal_handler=True):
