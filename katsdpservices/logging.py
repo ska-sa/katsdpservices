@@ -21,6 +21,7 @@ received.
 from __future__ import print_function, division, absolute_import
 import logging
 import os
+import re
 import time
 import signal
 import threading
@@ -91,6 +92,23 @@ class StaticExtraFilter(logging.Filter):
         return record
 
 
+def docker_container_id():
+    """Find the container ID of the current container.
+
+    If not running in a container, returns ``None``.
+    """
+    regex = re.compile(':/docker/([a-f0-9]+)$')
+    try:
+        with open("/proc/self/cgroup", "r") as f:
+            for line in f:
+                match = regex.search(line)
+                if match:
+                    return match.group(1)
+    except (OSError, IOError):
+        pass
+    return None
+
+
 def _setup_logging_gelf():
     parts = os.environ['KATSDP_LOG_GELF_ADDRESS'].rsplit(':', 1)
     host = parts[0]
@@ -105,6 +123,9 @@ def _setup_logging_gelf():
         raise ValueError('KATSDP_LOG_GELF_EXTRA must be a JSON dict')
     # pygelf wants the additional fields to have _ already prepended
     extras = {'_' + key: value for (key, value) in extras.items()}
+    container_id = docker_container_id()
+    if container_id is not None:
+        extras['_docker.id'] = container_id
 
     handler = pygelf.GelfUdpHandler(host, port,
                                     debug=True, include_extra_fields=True, compress=True,

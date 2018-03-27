@@ -108,11 +108,14 @@ class TestLogging(unittest.TestCase):
                 os.environ['KATSDP_LOG_GELF_LOCALNAME'] = 'myhost'
             if extra:
                 os.environ['KATSDP_LOG_GELF_EXTRA'] = '{"hello": "world", "number": 3}'
-            katsdpservices.setup_logging()
+            # Fake the container ID
+            container_id = "abcdef0123456789"
+            with mock.patch('katsdpservices.logging.docker_container_id',
+                            return_value=container_id):
+                katsdpservices.setup_logging()
             logging.info('info message')
             raw = sock.recv(4096)
             raw = zlib.decompress(raw)
-            print(repr(raw))
         data = json.loads(raw.decode('utf-8'))
         # This dictionary may need to be updated depending on the implementation
         expected = {
@@ -124,6 +127,7 @@ class TestLogging(unittest.TestCase):
             u"_line": mock.ANY,
             u"_func": u"_test_gelf",
             u"_module": u"test_logging",
+            u"_docker.id": container_id,
             u"level": 6,
             u"host": u"myhost" if localname else mock.ANY
         }
