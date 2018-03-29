@@ -99,7 +99,7 @@ def docker_container_id():
     """
     regex = re.compile(':/docker/([a-f0-9]+)$')
     try:
-        with open("/proc/self/cgroup", "r") as f:
+        with open("/proc/self/cgroup") as f:
             for line in f:
                 match = regex.search(line)
                 if match:
@@ -137,7 +137,7 @@ def _setup_logging_gelf():
 
 def setup_logging(add_signal_handler=True):
     """Prepare logging. See the module-level documentation for details."""
-    if 'KATSDP_LOG_GELF_ADDRESS' in os.environ:
+    if os.environ.get('KATSDP_LOG_GELF_ADDRESS'):
         _setup_logging_gelf()
     _setup_logging_stderr()
     if 'KATSDP_LOG_LEVEL' in os.environ:
