@@ -4,10 +4,9 @@ import sys
 import traceback
 import functools
 import contextlib
-import tornado
 import trollius
-from trollius import From, Return
-from nose.tools import *
+from trollius import From
+from nose.tools import assert_equal, assert_raises, assert_true, assert_is_not_none
 from ..asyncio import to_tornado_future
 
 
@@ -67,7 +66,7 @@ def test_to_tornado_future_exception(loop):
     with assert_raises(MyException):
         try:
             tf.result()
-        except Exception as error:
+        except Exception:
             tb = traceback.extract_tb(sys.exc_info()[2])
             raise
     assert_is_not_none(tb)

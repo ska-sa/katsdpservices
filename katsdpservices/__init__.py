@@ -12,7 +12,7 @@ else:
 # END VERSION CHECK
 
 
-from .logging import setup_logging
-from .restart import setup_restart, restart_process
-from .argparse import ArgumentParser
-from .interfaces import get_interface_address
+from .logging import setup_logging                     # noqa: F401
+from .restart import setup_restart, restart_process    # noqa: F401
+from .argparse import ArgumentParser                   # noqa: F401
+from .interfaces import get_interface_address          # noqa: F401
