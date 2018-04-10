@@ -12,6 +12,7 @@ def to_tornado_future(trollius_future, loop=None):
     """
     f = trollius.ensure_future(trollius_future, loop=loop)
     tf = tornado.concurrent.Future()
+
     def copy(future):
         assert future is f
         if f.cancelled():
@@ -27,6 +28,3 @@ def to_tornado_future(trollius_future, loop=None):
             tf.set_result(f.result())
     f.add_done_callback(copy)
     return tf
-
-
-

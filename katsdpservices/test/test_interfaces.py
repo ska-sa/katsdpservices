@@ -20,7 +20,7 @@ class TestGetInterfaceAddress(unittest.TestCase):
         """An interface with no IPv4 entries raises :exc:`ValueError`"""
         with mock.patch('netifaces.ifaddresses', return_value={
             netifaces.AF_LINK: [{'addr': 'de:ad:be:ef:ca:fe', 'broadcast': 'ff:ff:ff:ff:ff:ff'}]
-        }) as m:
+        }):
             with self.assertRaises(ValueError):
                 get_interface_address('wlan1')
 
