@@ -7,7 +7,6 @@ from __future__ import print_function, division, absolute_import
 import argparse
 try:
     import katsdptelstate
-    import redis
 except ImportError:
     pass
 
@@ -138,7 +137,7 @@ class ArgumentParser(argparse.ArgumentParser):
             if config_args.telstate is not None:
                 try:
                     namespace.telstate = katsdptelstate.TelescopeState(config_args.telstate)
-                except redis.ConnectionError as e:
+                except katsdptelstate.ConnectionError as e:
                     self.error(str(e))
                 namespace.name = config_args.name
                 self._load_defaults(namespace.telstate, namespace.name)
