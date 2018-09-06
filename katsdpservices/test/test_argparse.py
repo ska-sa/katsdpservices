@@ -28,6 +28,11 @@ class TestArgumentParser(unittest.TestCase):
         self.parser.add_argument('--float-arg', type=float, default=3.5)
         self.parser.add_argument('--no-default', type=str)
         self.parser.add_argument('--bool-arg', action='store_true', default=False)
+        group = self.parser.add_argument_group('Group options')
+        group.add_argument('--group-int', type=int, default=6)
+        mutual = self.parser.add_mutually_exclusive_group()
+        mutual.add_argument('--mutual-x', default='x')
+        mutual.add_argument('--mutual-y', default='y')
         self.data = {
             'config': {
                 'int_arg': 10,
@@ -36,6 +41,8 @@ class TestArgumentParser(unittest.TestCase):
                 'bool_arg': True,
                 'not_arg': 'should not be seen',
                 'telstate': 'example.org',
+                'group_int': 11,
+                'mutual_y': 'z',
                 'level1': {
                     'int_arg': 11,
                     'level2': {
@@ -51,7 +58,8 @@ class TestArgumentParser(unittest.TestCase):
     def test_no_telstate(self):
         """Passing explicit arguments but no telescope model sets the arguments."""
         args = self.parser.parse_args(
-            ['hello', '--int-arg=3', '--float-arg=2.5', '--no-default=test', '--bool-arg'])
+            ['hello', '--int-arg=3', '--float-arg=2.5', '--no-default=test', '--bool-arg',
+             '--group-int=11', '--mutual-y=z'])
         self.assertIsNone(args.telstate)
         self.assertEqual('', args.name)
         self.assertEqual('hello', args.positional)
@@ -59,9 +67,11 @@ class TestArgumentParser(unittest.TestCase):
         self.assertEqual(2.5, args.float_arg)
         self.assertEqual('test', args.no_default)
         self.assertEqual(True, args.bool_arg)
+        self.assertEqual(11, args.group_int)
+        self.assertEqual('z', args.mutual_y)
 
     def test_no_telstate_defaults(self):
-        """Passing no optional arguments sets those arguments"""
+        """Passing no optional arguments sets those arguments to default"""
         args = self.parser.parse_args(['hello'])
         self.assertIsNone(args.telstate)
         self.assertEqual('', args.name)
@@ -70,6 +80,8 @@ class TestArgumentParser(unittest.TestCase):
         self.assertEqual(3.5, args.float_arg)
         self.assertIsNone(args.no_default)
         self.assertEqual(False, args.bool_arg)
+        self.assertEqual(6, args.group_int)
+        self.assertEqual('y', args.mutual_y)
 
     def test_telstate_no_name(self):
         """Passing --telstate but not --name loads from root config"""
@@ -80,6 +92,8 @@ class TestArgumentParser(unittest.TestCase):
         self.assertEqual(4.5, args.float_arg)
         self.assertEqual('telstate', args.no_default)
         self.assertEqual(True, args.bool_arg)
+        self.assertEqual(11, args.group_int)
+        self.assertEqual('z', args.mutual_y)
         self.assertNotIn('help', vars(args))
         self.assertNotIn('not_arg', vars(args))
 
@@ -97,13 +111,14 @@ class TestArgumentParser(unittest.TestCase):
         """Command-line parameters override telescope state"""
         args = self.parser.parse_args(
             ['hello', '--int-arg=0', '--float-arg=0', '--telstate=example.com',
-             '--name=level1.level2'])
+             '--name=level1.level2', '--group-int=15'])
         self.assertIs(self.TelescopeState.return_value, args.telstate)
         self.assertEqual('level1.level2', args.name)
         self.assertEqual('hello', args.positional)
         self.assertEqual(0, args.int_arg)
         self.assertEqual(0.0, args.float_arg)
         self.assertEqual('telstate', args.no_default)
+        self.assertEqual(15, args.group_int)
 
     def test_default_telstate(self):
         """Calling `set_default` with `telstate` keyword works"""

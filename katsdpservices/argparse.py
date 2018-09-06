@@ -86,39 +86,34 @@ class ArgumentParser(argparse.ArgumentParser):
             parser.add_argument(
                 '--name', type=str, default='',
                 help='Name of this process for telescope state configuration')
-        self.config_keys = set()
 
-    def add_argument(self, *args, **kwargs):
-        action = super(ArgumentParser, self).add_argument(*args, **kwargs)
-        # Check if we have finished initialising ourself yet
-        if hasattr(self, 'config_keys'):
-            if action.dest is not None and action.dest is not argparse.SUPPRESS:
-                self.config_keys.add(action.dest)
-        return action
+    def _valid_keys(self):
+        """Get set of keys that match defined arguments"""
+        # _actions is a private member of the base class! But trying to avoid
+        # accessing this is quite difficult if one wishes to handle cases like
+        # :meth:`add_argument_group` and :meth:`add_mutually_exclusive_group`,
+        # parent parsers etc.
+        bad_names = [None, argparse.SUPPRESS, 'help'] + self._SPECIAL_NAMES
+        return set(action.dest for action in self._actions if action.dest not in bad_names)
 
     def _load_defaults(self, telstate, name):
         config_dict = telstate.get(self.config_key, {})
         parts = name.split('.')
         cur = config_dict
-        dicts = [cur]
+        config = cur.copy()
         split_name = self.config_key
         for part in parts:
             if cur is not None:
                 cur = cur.get(part)
                 if cur is not None:
-                    dicts.append(cur)
+                    config.update(cur)
             split_name += '.'
             split_name += part
-            dicts.append(telstate.get(split_name, {}))
+            config.update(telstate.get(split_name, {}))
 
-        # Go from most specific to most general, so that specific values
-        # take precedence.
-        seen = set(self._SPECIAL_NAMES)  # Prevents these being overridden
-        for cur in reversed(dicts):
-            for key in self.config_keys:
-                if key in cur and key not in seen:
-                    super(ArgumentParser, self).set_defaults(**{key: cur[key]})
-                    seen.add(key)
+        valid_keys = self._valid_keys()
+        defaults = {key: value for key, value in config.items() if key in valid_keys}
+        super(ArgumentParser, self).set_defaults(**defaults)
 
     def set_defaults(self, **kwargs):
         for special in self._SPECIAL_NAMES:
