@@ -5,6 +5,7 @@ fakeredis
 futures
 ipaddress
 redis
+msgpack
 netifaces
 numpy
 pygelf==0.3.3
