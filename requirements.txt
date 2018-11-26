@@ -8,7 +8,7 @@ redis
 msgpack
 netifaces
 numpy
-pygelf==0.3.3
+pygelf
 singledispatch
 six
 tornado
