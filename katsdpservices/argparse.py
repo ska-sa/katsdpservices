@@ -137,3 +137,22 @@ class ArgumentParser(argparse.ArgumentParser):
                 namespace.name = config_args.name
                 self._load_defaults(namespace.telstate, namespace.name)
         return super(ArgumentParser, self).parse_known_args(other, namespace)
+
+    def add_aiomonitor_arguments(self):
+        """Add a set of arguments for controlling aiomonitor.
+
+        See :func:`.start_aiomonitor` for details.
+        """
+        import aiomonitor
+        self.add_argument(
+            '--no-aiomonitor', dest='aiomonitor', action='store_false', default=True,
+            help='disable aiomonitor debugging server')
+        self.add_argument(
+            '--aiomonitor-host', type=str, default=aiomonitor.MONITOR_HOST,
+            help='bind host for aiomonitor/aioconsole [%(default)s]')
+        self.add_argument(
+            '--aiomonitor-port', type=int, default=aiomonitor.MONITOR_PORT,
+            help='port for aiomonitor [%(default)s]')
+        self.add_argument(
+            '--aioconsole-port', type=int, default=aiomonitor.CONSOLE_PORT,
+            help='port for aioconsole [%(default)s]')

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-tests_require = ['mock', 'nose', 'unittest2', 'six', 'katsdptelstate']
+tests_require = ['mock', 'nose', 'unittest2', 'six', 'katsdptelstate',
+                 'aiomonitor; python_version>="3"']
 
 setup(
     name="katsdpservices",
@@ -16,6 +17,7 @@ setup(
     extras_require={
         "argparse": ["katsdptelstate"],
         "asyncio": ["tornado", "trollius"],
+        "aiomonitor": ["aiomonitor"],
         "test": tests_require},
     use_katversion=True
 )
