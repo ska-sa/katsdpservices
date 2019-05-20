@@ -1,4 +1,4 @@
-"""Customised SDP logging
+r"""Customised SDP logging
 
 Logging is controlled by environment variables:
 
