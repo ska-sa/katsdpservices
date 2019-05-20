@@ -80,7 +80,7 @@ class TestLogging(unittest.TestCase):
                 "\\A2017-03-02T14:02:03.125Z - test_logging.py:\\d+ - INFO - info message\n"
                 "2017-03-02T14:02:03.125Z - test_logging.py:\\d+ - WARNING - warning message\\\\ "
                 "with\\\\ "
-                "newlines\n\Z", re.M))
+                "newlines\n\\Z", re.M))
 
     def test_log_level(self):
         os.environ['KATSDP_LOG_LEVEL'] = 'debug'
