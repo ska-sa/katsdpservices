@@ -145,8 +145,8 @@ class ArgumentParser(argparse.ArgumentParser):
         """
         import aiomonitor
         self.add_argument(
-            '--no-aiomonitor', dest='aiomonitor', action='store_false', default=True,
-            help='disable aiomonitor debugging server')
+            '--aiomonitor', action='store_true', default=False,
+            help='run aiomonitor debugging server')
         self.add_argument(
             '--aiomonitor-host', type=str, default=aiomonitor.MONITOR_HOST,
             help='bind host for aiomonitor/aioconsole [%(default)s]')

@@ -17,10 +17,10 @@ def start_aiomonitor(loop, args, locals):
 
     The return value should be used as a context manager e.g.::
 
-        with make_aiomonitor(loop, args, locals=locals()):
+        with start_aiomonitor(loop, args, locals=locals()):
             loop.run_until_complete(main())
 
-    If ``--no-aiomonitor`` is passed on the command line, it does not start and
+    If ``--aiomonitor`` is not passed on the command line, it does not start
     aiomonitor, although the package must still be present.
 
     Parameters
