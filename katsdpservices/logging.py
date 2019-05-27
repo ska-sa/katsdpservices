@@ -81,17 +81,6 @@ def _setup_logging_stderr():
     logging.root.addHandler(sh)
 
 
-class StaticExtraFilter(logging.Filter):
-    """Filter that adds preconfigured fields to all log records"""
-    def __init__(self, extra):
-        self._extra = extra
-
-    def filter(self, record):
-        for key, value in self._extra.items():
-            setattr(record, key, value)
-        return record
-
-
 def docker_container_id():
     """Find the container ID of the current container.
 
