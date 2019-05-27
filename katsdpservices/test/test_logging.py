@@ -50,7 +50,7 @@ class TestLogging(unittest.TestCase):
         self.environ = self._create_patch_dict(os.environ, clear=True)
         # Override time so that we can compare against a known value
         self.time = self._create_patch('time.time', autospec=True)
-        self.time.return_value = 1488463323.125
+        self.time.return_value = 1488463323.125125
         self.addCleanup(signal.signal, signal.SIGHUP, signal.SIG_DFL)
 
     def test_simple(self):
@@ -130,6 +130,7 @@ class TestLogging(unittest.TestCase):
             u"_func": u"_test_gelf",
             u"_module": u"test_logging",
             u"_docker.id": container_id,
+            u"_timestamp_precise": u"2017-03-02T14:02:03.125125Z",
             u"level": 6,
             u"host": u"myhost" if localname else mock.ANY
         }
