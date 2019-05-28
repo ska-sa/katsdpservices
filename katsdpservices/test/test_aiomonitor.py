@@ -25,7 +25,7 @@ class TestStartAiomonitor(unittest.TestCase):
         self.loop = asyncio.new_event_loop()
 
     def test_no_aiomonitor(self):
-        args = self.parser.parse_args(['--no-aiomonitor'])
+        args = self.parser.parse_args([])
         with start_aiomonitor(self.loop, args, locals()):
             pass
         self.mock_start.assert_not_called()
@@ -33,7 +33,7 @@ class TestStartAiomonitor(unittest.TestCase):
     def test_defaults(self):
         import aiomonitor
 
-        args = self.parser.parse_args([])
+        args = self.parser.parse_args(['--aiomonitor'])
         locals_ = {'hello': 'world'}
         with start_aiomonitor(self.loop, args, locals_):
             pass
@@ -45,7 +45,8 @@ class TestStartAiomonitor(unittest.TestCase):
 
     def test_explicit(self):
         args = self.parser.parse_args(
-            ['--aiomonitor-host', 'example.com',
+            ['--aiomonitor',
+             '--aiomonitor-host', 'example.com',
              '--aiomonitor-port', '1234',
              '--aioconsole-port', '2345'])
         locals_ = {'hello': 'world'}
