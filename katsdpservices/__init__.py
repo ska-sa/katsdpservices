@@ -12,8 +12,8 @@ else:
 # END VERSION CHECK
 
 
-from .logging import setup_logging                     # noqa: F401
-from .restart import setup_restart, restart_process    # noqa: F401
-from .argparse import ArgumentParser                   # noqa: F401
-from .interfaces import get_interface_address          # noqa: F401
-from .aiomonitor import start_aiomonitor               # noqa: F401
+from .logging import setup_logging                                   # noqa: F401
+from .restart import setup_restart, restart_process                  # noqa: F401
+from .argparse import ArgumentParser                                 # noqa: F401
+from .interfaces import get_interface_address                        # noqa: F401
+from .aiomonitor import start_aiomonitor, add_aiomonitor_arguments   # noqa: F401

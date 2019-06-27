@@ -9,7 +9,7 @@ import unittest
 import mock
 import six
 
-from .. import ArgumentParser, start_aiomonitor
+from .. import ArgumentParser, start_aiomonitor, add_aiomonitor_arguments
 
 
 @unittest.skipIf(six.PY2, 'Only supported on Python 3')
@@ -18,7 +18,7 @@ class TestStartAiomonitor(unittest.TestCase):
         import asyncio
 
         self.parser = ArgumentParser()
-        self.parser.add_aiomonitor_arguments()
+        add_aiomonitor_arguments(self.parser)
         patcher = mock.patch('aiomonitor.start_monitor')
         self.mock_start = patcher.start()
         self.addCleanup(patcher.stop)
