@@ -141,18 +141,9 @@ class ArgumentParser(argparse.ArgumentParser):
     def add_aiomonitor_arguments(self):
         """Add a set of arguments for controlling aiomonitor.
 
-        See :func:`.start_aiomonitor` for details.
+        .. deprecated:: June 2019
+
+            Use the :func:`~.add_aiomonitor_arguments` free function instead.
         """
-        import aiomonitor
-        self.add_argument(
-            '--aiomonitor', action='store_true', default=False,
-            help='run aiomonitor debugging server')
-        self.add_argument(
-            '--aiomonitor-host', type=str, default=aiomonitor.MONITOR_HOST,
-            help='bind host for aiomonitor/aioconsole [%(default)s]')
-        self.add_argument(
-            '--aiomonitor-port', type=int, default=aiomonitor.MONITOR_PORT,
-            help='port for aiomonitor [%(default)s]')
-        self.add_argument(
-            '--aioconsole-port', type=int, default=aiomonitor.CONSOLE_PORT,
-            help='port for aioconsole [%(default)s]')
+        from .aiomonitor import add_aiomonitor_arguments
+        add_aiomonitor_arguments(self)

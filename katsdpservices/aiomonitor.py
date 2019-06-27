@@ -44,3 +44,28 @@ def start_aiomonitor(loop, args, locals):
             port=args.aiomonitor_port,
             console_port=args.aioconsole_port,
             locals=locals)
+
+
+def add_aiomonitor_arguments(parser):
+    """Add a set of arguments for controlling aiomonitor.
+
+    See :func:`.start_aiomonitor` for details.
+
+    Parameters
+    ----------
+    parser : :class:`argparse.ArgumentParser`
+        Parser to which arguments will be added.
+    """
+    import aiomonitor
+    parser.add_argument(
+        '--aiomonitor', action='store_true', default=False,
+        help='run aiomonitor debugging server')
+    parser.add_argument(
+        '--aiomonitor-host', type=str, default=aiomonitor.MONITOR_HOST,
+        help='bind host for aiomonitor/aioconsole [%(default)s]')
+    parser.add_argument(
+        '--aiomonitor-port', type=int, default=aiomonitor.MONITOR_PORT,
+        help='port for aiomonitor [%(default)s]')
+    parser.add_argument(
+        '--aioconsole-port', type=int, default=aiomonitor.CONSOLE_PORT,
+        help='port for aioconsole [%(default)s]')
