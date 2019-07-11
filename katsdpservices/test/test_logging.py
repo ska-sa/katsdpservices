@@ -113,7 +113,9 @@ class TestLogging(unittest.TestCase):
             with mock.patch('katsdpservices.logging.docker_container_id',
                             return_value=container_id):
                 katsdpservices.setup_logging()
-            logging.info('info message')
+            # exc_info=False is to test the workaround for
+            # https://github.com/keeprocking/pygelf/issues/29
+            logging.info('info message', exc_info=False)
             raw = sock.recv(4096)
             raw = zlib.decompress(raw)
         data = json.loads(raw.decode('utf-8'))
