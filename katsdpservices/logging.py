@@ -44,6 +44,19 @@ class OnelineFormatter(logging.Formatter):
         return s.replace('\\', r'\\').replace('\n', r'\ ')
 
 
+class FixExcInfo(object):
+    """Workaround for https://github.com/keeprocking/pygelf/issues/29.
+
+    Changes any falsey exc_info into None, which is the only falsey value
+    that pygelf handles correctly. This affects (for example) the asyncio
+    code that warns about pending tasks.
+    """
+    def filter(self, record):
+        if not record.exc_info:
+            record.exc_info = None
+        return record
+
+
 def toggle_debug():
     """Swap current log level with the saved log level."""
     global _toggle_next_level
@@ -119,6 +132,7 @@ def _setup_logging_gelf():
     handler = pygelf.GelfUdpHandler(host, port,
                                     debug=True, include_extra_fields=True, compress=True,
                                     static_fields=extras)
+    handler.addFilter(FixExcInfo())
     if localname:
         handler.domain = localname
     logging.root.addHandler(handler)
