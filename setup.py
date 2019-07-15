@@ -12,7 +12,7 @@ setup(
     author_email="bmerry@ska.ac.za",
     packages=find_packages(),
     setup_requires=["katversion"],
-    install_requires=["netifaces", "pygelf"],
+    install_requires=["netifaces", "pygelf>=0.3.6"],
     tests_require=tests_require,
     extras_require={
         "argparse": ["katsdptelstate"],
