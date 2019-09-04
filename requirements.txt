@@ -16,4 +16,4 @@ six
 terminaltables; python_version>='3'
 tornado
 trollius
-git+ssh://git@github.com/ska-sa/katsdptelstate#egg=katsdptelstate
+katsdptelstate @ git+https://git@github.com/ska-sa/katsdptelstate
