@@ -16,4 +16,4 @@ six
 terminaltables; python_version>='3'
 tornado
 trollius
-katsdptelstate @ git+https://git@github.com/ska-sa/katsdptelstate
+katsdptelstate @ git+https://github.com/ska-sa/katsdptelstate
