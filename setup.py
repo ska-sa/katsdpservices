@@ -8,8 +8,8 @@ setup(
     name="katsdpservices",
     description=("common code used by services that make up the telescope system, "
                  "such as a common logging setup"),
-    author="Bruce Merry",
-    author_email="bmerry@ska.ac.za",
+    author="MeerKAT SDP team",
+    author_email="sdpdev+katsdpservices@ska.ac.za",
     packages=find_packages(),
     setup_requires=["katversion"],
     install_requires=["netifaces", "pygelf>=0.3.6"],
