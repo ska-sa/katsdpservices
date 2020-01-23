@@ -1,19 +1,17 @@
 aiomonitor; python_version>='3'
 aioconsole; python_version>='3'
-backports-abc
-backports.ssl-match-hostname
+backports-abc; python_version<'3'
+backports.ssl-match-hostname; python_version<'3'
 certifi
 fakeredis
-futures
-ipaddress
+futures; python_version<'3'
+ipaddress; python_version<'3'
 redis
 msgpack
 netifaces
 numpy
 pygelf
-singledispatch
+singledispatch; python_version<'3'
 six
 terminaltables; python_version>='3'
-tornado
-trollius
 katsdptelstate @ git+https://github.com/ska-sa/katsdptelstate
