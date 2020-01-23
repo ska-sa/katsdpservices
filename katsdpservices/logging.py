@@ -15,12 +15,14 @@ KATSDP_LOG_GELF_EXTRA: set to a JSON dictionary (containing only strings and
   every log message.
 
 A signal handler is installed that toggles debug-level logging when SIGUSR2 is
-received.
+received, and exception hooks are installed so that unhandled exceptions are
+logged rather than merely printing to stderr.
 """
 
 from __future__ import print_function, division, absolute_import
 import logging
 import os
+import sys
 import re
 import time
 import signal
@@ -124,7 +126,26 @@ def _setup_logging_gelf():
     logging.root.addHandler(handler)
 
 
-def setup_logging(add_signal_handler=True):
+def _sys_excepthook(exc_type, exc_value,exc_traceback):
+    logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
+
+
+def _threading_excepthook(args):
+    if args.exc_type == SystemExit:
+        return      # To match the behaviour of the default
+    if logging is None or threading is None:
+        return      # We're deep into interpreter shutdown - just give up
+
+    # Based on Python 3.8 implementation: https://github.com/python/cpython/pull/13515
+    if args.thread is not None:
+        name = args.thread.name
+    else:
+        name = threading.get_ident()
+    logging.error("Exception in thread {}:".format(name),
+                  exc_info=(args.exc_type, args.exc_value, args.exc_traceback))
+
+
+def setup_logging(add_signal_handler=True, add_excepthook=True):
     """Prepare logging. See the module-level documentation for details."""
     if os.environ.get('KATSDP_LOG_GELF_ADDRESS'):
         _setup_logging_gelf()
@@ -136,3 +157,8 @@ def setup_logging(add_signal_handler=True):
     logging.captureWarnings(True)
     if add_signal_handler:
         signal.signal(signal.SIGUSR2, lambda signum, frame: toggle_debug())
+    if add_excepthook:
+        sys.excepthook = _sys_excepthook
+        # Only supported from Python 3.8
+        if hasattr(threading, 'excepthook'):
+            threading.excepthook = _threading_excepthook
