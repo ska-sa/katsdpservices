@@ -126,7 +126,7 @@ def _setup_logging_gelf():
     logging.root.addHandler(handler)
 
 
-def _sys_excepthook(exc_type, exc_value,exc_traceback):
+def _sys_excepthook(exc_type, exc_value, exc_traceback):
     logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
 
 
