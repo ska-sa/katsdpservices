@@ -16,7 +16,6 @@ setup(
     tests_require=tests_require,
     extras_require={
         "argparse": ["katsdptelstate"],
-        "asyncio": ["tornado", "trollius"],
         "aiomonitor": ["aiomonitor"],
         "test": tests_require},
     use_katversion=True
