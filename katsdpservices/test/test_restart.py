@@ -5,7 +5,7 @@ import mock
 import os
 import signal
 import time
-import unittest2 as unittest
+import unittest
 import katsdpservices
 
 
