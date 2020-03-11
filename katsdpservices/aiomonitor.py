@@ -1,7 +1,6 @@
 """Utilities to simplify starting aiomonitor"""
 
 
-
 class _DummyContext:
     """Context manager that does nothing"""
     def __enter__(self):
