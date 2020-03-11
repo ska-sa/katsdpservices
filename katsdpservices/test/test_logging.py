@@ -6,6 +6,7 @@ import logging
 import socket
 import os
 import re
+import io
 import signal
 import json
 import zlib
@@ -13,7 +14,6 @@ from contextlib import closing
 
 import unittest2 as unittest
 import mock
-import six
 
 import katsdpservices
 
@@ -40,7 +40,7 @@ class TestLogging(unittest.TestCase):
 
     def setUp(self):
         # Grab the stderr written by the logger
-        self.stderr = self._create_patch('sys.stderr', new_callable=six.StringIO)
+        self.stderr = self._create_patch('sys.stderr', new_callable=io.StringIO)
         # Point root away from the actual root logger, so that we don't break
         # that.
         self.logger = self._create_patch(

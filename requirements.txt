@@ -7,6 +7,5 @@ msgpack
 netifaces
 numpy
 pygelf
-six
 terminaltables
 katsdptelstate @ git+https://github.com/ska-sa/katsdptelstate

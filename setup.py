@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-tests_require = ['mock', 'nose', 'unittest2', 'six', 'katsdptelstate',
+tests_require = ['mock', 'nose', 'unittest2', 'katsdptelstate',
                  'aiomonitor; python_version>="3"']
 
 setup(
