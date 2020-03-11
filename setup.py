@@ -18,5 +18,6 @@ setup(
         "argparse": ["katsdptelstate"],
         "aiomonitor": ["aiomonitor"],
         "test": tests_require},
+    python_requires='>=3.5',
     use_katversion=True
 )
