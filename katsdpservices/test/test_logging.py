@@ -134,9 +134,7 @@ class TestLogging(unittest.TestCase):
         if extra:
             expected["_hello"] = "world"
             expected["_number"] = 3
-        # It's only set on Python 3
-        if "_stack_info" in data:
-            expected["_stack_info"] = None
+        expected["_stack_info"] = None
         self.assertEqual(data, expected)
 
     def test_gelf_basic(self):
