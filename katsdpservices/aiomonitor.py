@@ -1,9 +1,8 @@
 """Utilities to simplify starting aiomonitor"""
 
-from __future__ import print_function, division, absolute_import
 
 
-class _DummyContext(object):
+class _DummyContext:
     """Context manager that does nothing"""
     def __enter__(self):
         return self

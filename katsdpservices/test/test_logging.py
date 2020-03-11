@@ -1,6 +1,5 @@
 """Tests for :mod:`katsdpservices.logging`"""
 
-from __future__ import print_function, division, absolute_import
 import time
 import logging
 import socket
@@ -120,24 +119,24 @@ class TestLogging(unittest.TestCase):
         data = json.loads(raw.decode('utf-8'))
         # This dictionary may need to be updated depending on the implementation
         expected = {
-            u"timestamp": self.time.return_value,
-            u"version": u"1.1",
-            u"short_message": u"info message",
-            u"_logger_name": u"katsdpservices.test.dummy",
-            u"_file": mock.ANY,
-            u"_line": mock.ANY,
-            u"_func": u"_test_gelf",
-            u"_module": u"test_logging",
-            u"_docker.id": container_id,
-            u"level": 6,
-            u"host": u"myhost" if localname else mock.ANY
+            "timestamp": self.time.return_value,
+            "version": "1.1",
+            "short_message": "info message",
+            "_logger_name": "katsdpservices.test.dummy",
+            "_file": mock.ANY,
+            "_line": mock.ANY,
+            "_func": "_test_gelf",
+            "_module": "test_logging",
+            "_docker.id": container_id,
+            "level": 6,
+            "host": "myhost" if localname else mock.ANY
         }
         if extra:
-            expected[u"_hello"] = u"world"
-            expected[u"_number"] = 3
+            expected["_hello"] = "world"
+            expected["_number"] = 3
         # It's only set on Python 3
-        if u"_stack_info" in data:
-            expected[u"_stack_info"] = None
+        if "_stack_info" in data:
+            expected["_stack_info"] = None
         self.assertEqual(data, expected)
 
     def test_gelf_basic(self):

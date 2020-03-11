@@ -19,7 +19,6 @@ received, and exception hooks are installed so that unhandled exceptions are
 logged rather than merely printing to stderr.
 """
 
-from __future__ import print_function, division, absolute_import
 import logging
 import os
 import sys
@@ -42,7 +41,7 @@ class OnelineFormatter(logging.Formatter):
     are replaced by "\\".
     """
     def format(self, record):
-        s = super(OnelineFormatter, self).format(record)
+        s = super().format(record)
         return s.replace('\\', r'\\').replace('\n', r'\ ')
 
 
@@ -95,7 +94,7 @@ def docker_container_id():
                 match = regex.search(line)
                 if match:
                     return match.group(1)
-    except (OSError, IOError):
+    except OSError:
         pass
     return None
 
