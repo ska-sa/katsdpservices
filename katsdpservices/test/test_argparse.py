@@ -1,8 +1,10 @@
 """Tests for :mod:`katsdpservices.argparse`."""
 
 from __future__ import print_function, division, absolute_import
-import mock
+
 import unittest
+from unittest import mock
+
 from katsdpservices import ArgumentParser
 
 

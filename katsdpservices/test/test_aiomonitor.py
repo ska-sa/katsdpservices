@@ -5,8 +5,7 @@ imports are delayed.
 """
 
 import unittest
-
-import mock
+from unittest import mock
 
 from .. import ArgumentParser, start_aiomonitor, add_aiomonitor_arguments
 

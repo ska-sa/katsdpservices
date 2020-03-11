@@ -11,9 +11,8 @@ import signal
 import json
 import zlib
 from contextlib import closing
-
 import unittest
-import mock
+from unittest import mock
 
 import katsdpservices
 

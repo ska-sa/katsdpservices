@@ -1,5 +1,2 @@
 coverage
-funcsigs                  # via mock
-mock
 nose
-pbr                       # via mock

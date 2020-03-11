@@ -1,8 +1,10 @@
 """Tests for :mod:`katsdpservices.interfaces`."""
 
-import mock
 import unittest
+from unittest import mock
+
 import netifaces
+
 from katsdpservices import get_interface_address
 
 
