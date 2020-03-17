@@ -1,11 +1,11 @@
 """Tests for :mod:`katsdpservices.restart`"""
 
-from __future__ import print_function, division, absolute_import
-import mock
 import os
 import signal
 import time
-import unittest2 as unittest
+import unittest
+from unittest import mock
+
 import katsdpservices
 
 

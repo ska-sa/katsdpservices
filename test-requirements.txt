@@ -1,10 +1,2 @@
-argparse                  # via unittest2
 coverage
-funcsigs                  # via mock
-linecache2                # via traceback2
-mock
 nose
-pbr                       # via mock
-six
-traceback2                # via unittest2
-unittest2

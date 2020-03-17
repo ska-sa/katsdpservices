@@ -5,14 +5,11 @@ imports are delayed.
 """
 
 import unittest
-
-import mock
-import six
+from unittest import mock
 
 from .. import ArgumentParser, start_aiomonitor, add_aiomonitor_arguments
 
 
-@unittest.skipIf(six.PY2, 'Only supported on Python 3')
 class TestStartAiomonitor(unittest.TestCase):
     def setUp(self):
         import asyncio

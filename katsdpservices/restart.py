@@ -1,5 +1,4 @@
 """Utility to make the process restart itself on SIGHUP"""
-from __future__ import print_function, division, absolute_import
 import sys
 import os.path
 import fcntl
@@ -30,12 +29,12 @@ def restart_process():
                     try:
                         flags = fcntl.fcntl(fd, fcntl.F_GETFD)
                         fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
-                    except (OSError, IOError):
+                    except OSError:
                         # This is guaranteed to happen, because the fd used by
                         # os.listdir will be in the list, but is closed by the
                         # time we try to change the flags on it.
                         pass
-    except (OSError, IOError):
+    except OSError:
         logging.warn('Could not read /proc/self/fd')
     # Ensure any logging gets properly flushed
     sys.stdout.flush()
