@@ -15,6 +15,16 @@ setup(
     author="MeerKAT SDP team",
     author_email="sdpdev+katsdpservices@ska.ac.za",
     url='https://github.com/ska-sa/katsdpservices',
+    license='Modified BSD',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Topic :: Scientific/Engineering :: Astronomy'
+    ],
     packages=find_packages(),
     setup_requires=["katversion"],
     install_requires=["netifaces", "pygelf>=0.3.6"],
