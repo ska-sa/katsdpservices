@@ -1,7 +1,6 @@
 aiomonitor
 aioconsole
 certifi
-fakeredis
 redis
 msgpack
 netifaces
