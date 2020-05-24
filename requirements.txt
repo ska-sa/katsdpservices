@@ -14,4 +14,4 @@ pygelf
 singledispatch; python_version<'3'
 six
 terminaltables; python_version>='3'
-katsdptelstate @ git+https://github.com/ska-sa/katsdptelstate
+katsdptelstate @ git+https://github.com/ska-sa/katsdptelstate@python2
