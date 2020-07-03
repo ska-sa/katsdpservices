@@ -1,19 +1,33 @@
+################################################################################
+# Copyright (c) 2017-2020, National Research Foundation (Square Kilometre Array)
+#
+# Licensed under the BSD 3-Clause License (the "License"); you may not use
+# this file except in compliance with the License. You may obtain a copy
+# of the License at
+#
+#   https://opensource.org/licenses/BSD-3-Clause
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+################################################################################
+
 """Tests for :mod:`katsdpservices.logging`"""
 
-from __future__ import print_function, division, absolute_import
 import time
 import logging
 import socket
 import os
 import re
+import io
 import signal
 import json
 import zlib
 from contextlib import closing
-
-import unittest2 as unittest
-import mock
-import six
+import unittest
+from unittest import mock
 
 import katsdpservices
 
@@ -40,7 +54,7 @@ class TestLogging(unittest.TestCase):
 
     def setUp(self):
         # Grab the stderr written by the logger
-        self.stderr = self._create_patch('sys.stderr', new_callable=six.StringIO)
+        self.stderr = self._create_patch('sys.stderr', new_callable=io.StringIO)
         # Point root away from the actual root logger, so that we don't break
         # that.
         self.logger = self._create_patch(
@@ -121,25 +135,23 @@ class TestLogging(unittest.TestCase):
         data = json.loads(raw.decode('utf-8'))
         # This dictionary may need to be updated depending on the implementation
         expected = {
-            u"timestamp": self.time.return_value,
-            u"version": u"1.1",
-            u"short_message": u"info message",
-            u"_logger_name": u"katsdpservices.test.dummy",
-            u"_file": mock.ANY,
-            u"_line": mock.ANY,
-            u"_func": u"_test_gelf",
-            u"_module": u"test_logging",
-            u"_docker.id": container_id,
-            u"_timestamp_precise": u"2017-03-02T14:02:03.125125Z",
-            u"level": 6,
-            u"host": u"myhost" if localname else mock.ANY
+            "timestamp": self.time.return_value,
+            "version": "1.1",
+            "short_message": "info message",
+            "_logger_name": "katsdpservices.test.dummy",
+            "_file": mock.ANY,
+            "_line": mock.ANY,
+            "_func": "_test_gelf",
+            "_module": "test_logging",
+            "_docker.id": container_id,
+            "_timestamp_precise": "2017-03-02T14:02:03.125125Z",
+            "level": 6,
+            "host": "myhost" if localname else mock.ANY
         }
         if extra:
-            expected[u"_hello"] = u"world"
-            expected[u"_number"] = 3
-        # It's only set on Python 3
-        if u"_stack_info" in data:
-            expected[u"_stack_info"] = None
+            expected["_hello"] = "world"
+            expected["_number"] = 3
+        expected["_stack_info"] = None
         self.assertEqual(data, expected)
 
     def test_gelf_basic(self):

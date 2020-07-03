@@ -1,9 +1,24 @@
+################################################################################
+# Copyright (c) 2017-2020, National Research Foundation (Square Kilometre Array)
+#
+# Licensed under the BSD 3-Clause License (the "License"); you may not use
+# this file except in compliance with the License. You may obtain a copy
+# of the License at
+#
+#   https://opensource.org/licenses/BSD-3-Clause
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+################################################################################
+
 """Argument parser that can load defaults from a telescope state.
 
 See :class:`ArgumentParser` for details.
 """
 
-from __future__ import print_function, division, absolute_import
 import argparse
 try:
     import katsdptelstate
@@ -20,7 +35,7 @@ class _HelpAction(argparse.Action):
                  dest=argparse.SUPPRESS,
                  default=argparse.SUPPRESS,
                  help=None):
-        super(_HelpAction, self).__init__(
+        super().__init__(
             option_strings=option_strings,
             dest=dest,
             default=default,
@@ -74,12 +89,12 @@ class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self, *args, **kwargs):
         self.config_key = kwargs.pop('config_key', 'config')
-        super(ArgumentParser, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # Create a separate parser that will extract only the special args
         self.config_parser = argparse.ArgumentParser(add_help=False)
         self.config_parser.add_argument('-h', '--help', action=_HelpAction,
                                         default=argparse.SUPPRESS, parser=self)
-        for parser in [super(ArgumentParser, self), self.config_parser]:
+        for parser in [super(), self.config_parser]:
             parser.add_argument(
                 '--telstate', help='Telescope state repository from which to retrieve config',
                 metavar='HOST[:PORT]')
@@ -94,7 +109,7 @@ class ArgumentParser(argparse.ArgumentParser):
         # :meth:`add_argument_group` and :meth:`add_mutually_exclusive_group`,
         # parent parsers etc.
         bad_names = [None, argparse.SUPPRESS, 'help'] + self._SPECIAL_NAMES
-        return set(action.dest for action in self._actions if action.dest not in bad_names)
+        return {action.dest for action in self._actions if action.dest not in bad_names}
 
     def _load_defaults(self, telstate, name):
         config_dict = telstate.get(self.config_key, {})
@@ -113,13 +128,13 @@ class ArgumentParser(argparse.ArgumentParser):
 
         valid_keys = self._valid_keys()
         defaults = {key: value for key, value in config.items() if key in valid_keys}
-        super(ArgumentParser, self).set_defaults(**defaults)
+        super().set_defaults(**defaults)
 
     def set_defaults(self, **kwargs):
         for special in self._SPECIAL_NAMES:
             if special in kwargs:
                 self.config_parser.set_defaults(**{special: kwargs.pop(special)})
-        super(ArgumentParser, self).set_defaults(**kwargs)
+        super().set_defaults(**kwargs)
 
     def parse_known_args(self, args=None, namespace=None):
         if namespace is None:
@@ -136,7 +151,7 @@ class ArgumentParser(argparse.ArgumentParser):
                     self.error(str(e))
                 namespace.name = config_args.name
                 self._load_defaults(namespace.telstate, namespace.name)
-        return super(ArgumentParser, self).parse_known_args(other, namespace)
+        return super().parse_known_args(other, namespace)
 
     def add_aiomonitor_arguments(self):
         """Add a set of arguments for controlling aiomonitor.

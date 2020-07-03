@@ -1,5 +1,21 @@
+################################################################################
+# Copyright (c) 2017-2020, National Research Foundation (Square Kilometre Array)
+#
+# Licensed under the BSD 3-Clause License (the "License"); you may not use
+# this file except in compliance with the License. You may obtain a copy
+# of the License at
+#
+#   https://opensource.org/licenses/BSD-3-Clause
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+################################################################################
+
 """Utility to make the process restart itself on SIGHUP"""
-from __future__ import print_function, division, absolute_import
+
 import sys
 import os.path
 import fcntl
@@ -30,12 +46,12 @@ def restart_process():
                     try:
                         flags = fcntl.fcntl(fd, fcntl.F_GETFD)
                         fcntl.fcntl(fd, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
-                    except (OSError, IOError):
+                    except OSError:
                         # This is guaranteed to happen, because the fd used by
                         # os.listdir will be in the list, but is closed by the
                         # time we try to change the flags on it.
                         pass
-    except (OSError, IOError):
+    except OSError:
         logging.warn('Could not read /proc/self/fd')
     # Ensure any logging gets properly flushed
     sys.stdout.flush()

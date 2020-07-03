@@ -1,19 +1,10 @@
-aiomonitor; python_version>='3'
-aioconsole; python_version>='3'
-backports-abc
-backports.ssl-match-hostname
+aiomonitor
+aioconsole
 certifi
-fakeredis
-futures
-ipaddress
 redis
 msgpack
 netifaces
 numpy
 pygelf
-singledispatch
-six
-terminaltables; python_version>='3'
-tornado
-trollius
-git+ssh://git@github.com/ska-sa/katsdptelstate#egg=katsdptelstate
+terminaltables
+katsdptelstate @ git+https://github.com/ska-sa/katsdptelstate

@@ -1,3 +1,19 @@
+################################################################################
+# Copyright (c) 2017-2020, National Research Foundation (Square Kilometre Array)
+#
+# Licensed under the BSD 3-Clause License (the "License"); you may not use
+# this file except in compliance with the License. You may obtain a copy
+# of the License at
+#
+#   https://opensource.org/licenses/BSD-3-Clause
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+################################################################################
+
 """Tests for :mod:`katsdpservices.aiomonitor`.
 
 This file needs to load correctly in Python 2, which is why some
@@ -5,14 +21,11 @@ imports are delayed.
 """
 
 import unittest
-
-import mock
-import six
+from unittest import mock
 
 from .. import ArgumentParser, start_aiomonitor, add_aiomonitor_arguments
 
 
-@unittest.skipIf(six.PY2, 'Only supported on Python 3')
 class TestStartAiomonitor(unittest.TestCase):
     def setUp(self):
         import asyncio
