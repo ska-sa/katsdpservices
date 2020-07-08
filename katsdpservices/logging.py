@@ -43,6 +43,7 @@ import time
 import signal
 import threading
 import json
+import datetime
 
 import pygelf
 
@@ -115,6 +116,25 @@ def docker_container_id():
     return None
 
 
+class _TimestampFilter(logging.Filter):
+    """Adds an extra timestamp_precise field to records.
+
+    The timestamp is formatted according to ISO8601 with microsecond
+    precision. This is to work around the lack of native sub-ms
+    timestamp support in logstash
+    (https://github.com/elastic/logstash/issues/10822).
+
+    While Elasticsearch supports nanosecond timestamps, Python versions
+    before 3.7 can't do better than about 200ns precision because they
+    represent time as 64-bit float seconds since the UNIX epoch, and
+    it doesn't seem worth the effort to go finer than microseconds.
+    """
+    def filter(self, record):
+        dt = datetime.datetime.utcfromtimestamp(record.created)
+        record.timestamp_precise = dt.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        return True
+
+
 def _setup_logging_gelf():
     parts = os.environ['KATSDP_LOG_GELF_ADDRESS'].rsplit(':', 1)
     host = parts[0]
@@ -136,6 +156,7 @@ def _setup_logging_gelf():
     handler = pygelf.GelfUdpHandler(host, port,
                                     debug=True, include_extra_fields=True, compress=True,
                                     static_fields=extras)
+    handler.addFilter(_TimestampFilter())
     if localname:
         handler.domain = localname
     logging.root.addHandler(handler)
