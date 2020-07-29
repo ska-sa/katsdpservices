@@ -19,6 +19,8 @@
 import unittest
 from unittest import mock
 
+from katsdptelstate.endpoint import Endpoint
+
 from katsdpservices import ArgumentParser
 
 
@@ -77,6 +79,7 @@ class TestArgumentParser(unittest.TestCase):
             ['hello', '--int-arg=3', '--float-arg=2.5', '--no-default=test', '--bool-arg',
              '--group-int=11', '--mutual-y=z'])
         self.assertIsNone(args.telstate)
+        self.assertIsNone(args.telstate_endpoint)
         self.assertEqual('', args.name)
         self.assertEqual('hello', args.positional)
         self.assertEqual(3, args.int_arg)
@@ -103,6 +106,7 @@ class TestArgumentParser(unittest.TestCase):
         """Passing --telstate but not --name loads from root config"""
         args = self.parser.parse_args(['hello', '--telstate=example.com'])
         self.assertIs(self.TelescopeState.return_value, args.telstate)
+        self.assertEqual(Endpoint('example.com', 6379), args.telstate_endpoint)
         self.assertEqual('', args.name)
         self.assertEqual(10, args.int_arg)
         self.assertEqual(4.5, args.float_arg)
@@ -117,6 +121,7 @@ class TestArgumentParser(unittest.TestCase):
         """Passing a nested name loads from all levels of the hierarchy"""
         args = self.parser.parse_args(['hello', '--telstate=example.com', '--name=level1.level2'])
         self.assertIs(self.TelescopeState.return_value, args.telstate)
+        self.assertEqual(Endpoint('example.com', 6379), args.telstate_endpoint)
         self.assertEqual('level1.level2', args.name)
         self.assertEqual('hello', args.positional)
         self.assertEqual(11, args.int_arg)

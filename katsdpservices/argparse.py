@@ -21,7 +21,7 @@ See :class:`ArgumentParser` for details.
 
 import argparse
 try:
-    import katsdptelstate
+    import katsdptelstate.endpoint
 except ImportError:
     pass
 
@@ -146,11 +146,15 @@ class ArgumentParser(argparse.ArgumentParser):
         else:
             if config_args.telstate is not None:
                 try:
+                    namespace.telstate_endpoint = \
+                        katsdptelstate.endpoint.endpoint_parser(6379)(config_args.telstate)
                     namespace.telstate = katsdptelstate.TelescopeState(config_args.telstate)
                 except katsdptelstate.ConnectionError as e:
                     self.error(str(e))
                 namespace.name = config_args.name
                 self._load_defaults(namespace.telstate, namespace.name)
+            else:
+                namespace.telstate_endpoint = None
         return super().parse_known_args(other, namespace)
 
     def add_aiomonitor_arguments(self):
