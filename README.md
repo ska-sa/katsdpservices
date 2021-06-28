@@ -13,3 +13,15 @@ subsystem of the MeerKAT radio telescope. It includes
   [aiomonitor](https://github.com/aio-libs/aiomonitor).
 - A simple wrapper around [netifaces](https://github.com/al45tair/netifaces) to
   get the IP address of a network interface.
+
+## Changelog
+
+### 1.1
+
+- Add `telstate_endpoint` attribute to argparse result (#29)
+- Add a custom log field with timestamp in microsecond precision (#21)
+- Add pre-commit hooks
+
+### 1.0
+
+First public release.
