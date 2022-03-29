@@ -16,6 +16,10 @@ subsystem of the MeerKAT radio telescope. It includes
 
 ## Changelog
 
+### 1.2
+
+- Resolve logging destination at startup (#33)
+
 ### 1.1
 
 - Add `telstate_endpoint` attribute to argparse result (#29)
