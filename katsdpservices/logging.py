@@ -41,6 +41,7 @@ import sys
 import re
 import time
 import signal
+import socket
 import threading
 import json
 import datetime
@@ -139,9 +140,20 @@ def _setup_logging_gelf():
     parts = os.environ['KATSDP_LOG_GELF_ADDRESS'].rsplit(':', 1)
     host = parts[0]
     if len(parts) == 2:
-        port = int(parts[1])
+        port = parts[1]
     else:
         port = 12201     # Default GELF port
+
+    # Resolve the hostname once up front, to work around
+    # https://github.com/keeprocking/pygelf/issues/51. Restrict to IPv4
+    # since it's not clear if pygelf can handle IPv6 (due to
+    # https://bugs.python.org/issue14855).
+    for res in socket.getaddrinfo(
+            host, port,
+            family=socket.AF_INET, type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP):
+        host, port = res[4][:2]
+        break
+
     localname = os.environ.get('KATSDP_LOG_GELF_LOCALNAME')
     extras = os.environ.get('KATSDP_LOG_GELF_EXTRA', '{}')
     extras = json.loads(extras)
