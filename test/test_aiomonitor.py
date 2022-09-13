@@ -23,7 +23,7 @@ imports are delayed.
 import unittest
 from unittest import mock
 
-from .. import ArgumentParser, start_aiomonitor, add_aiomonitor_arguments
+from katsdpservices import ArgumentParser, start_aiomonitor, add_aiomonitor_arguments
 
 
 class TestStartAiomonitor(unittest.TestCase):
