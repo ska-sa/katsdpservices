@@ -75,7 +75,7 @@ def setup_restart(signum=signal.SIGHUP, restart_callback=None):
     """
     def restart_thread():
         logger = logging.getLogger(__file__)
-        logger.warn("Received signal %d, restarting", signum)
+        logger.warning("Received signal %d, restarting", signum)
         if restart_callback is not None:
             if restart_callback():
                 return
