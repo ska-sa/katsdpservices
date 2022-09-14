@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (c) 2017-2020, National Research Foundation (Square Kilometre Array)
+# Copyright (c) 2017-2020, 2022, National Research Foundation (SARAO)
 #
 # Licensed under the BSD 3-Clause License (the "License"); you may not use
 # this file except in compliance with the License. You may obtain a copy
@@ -14,22 +14,19 @@
 # limitations under the License.
 ################################################################################
 
-"""Tests for :mod:`katsdpservices.aiomonitor`.
+"""Tests for :mod:`katsdpservices.aiomonitor`."""
 
-This file needs to load correctly in Python 2, which is why some
-imports are delayed.
-"""
-
+import asyncio
 import unittest
 from unittest import mock
 
-from .. import ArgumentParser, start_aiomonitor, add_aiomonitor_arguments
+import aiomonitor
+
+from katsdpservices import ArgumentParser, start_aiomonitor, add_aiomonitor_arguments
 
 
 class TestStartAiomonitor(unittest.TestCase):
     def setUp(self):
-        import asyncio
-
         self.parser = ArgumentParser()
         add_aiomonitor_arguments(self.parser)
         patcher = mock.patch('aiomonitor.start_monitor')
@@ -44,8 +41,6 @@ class TestStartAiomonitor(unittest.TestCase):
         self.mock_start.assert_not_called()
 
     def test_defaults(self):
-        import aiomonitor
-
         args = self.parser.parse_args(['--aiomonitor'])
         locals_ = {'hello': 'world'}
         with start_aiomonitor(self.loop, args, locals_):
