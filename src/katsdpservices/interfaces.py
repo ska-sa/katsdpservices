@@ -31,12 +31,12 @@ def get_interface_address(interface):
 
     Parameters
     ----------
-    interface : str
+    interface : str | None
         Name of the network interface
 
     Returns
     -------
-    address : str
+    address : str | None
         Dotted-quad representation of the IPv4 address
 
     Raises

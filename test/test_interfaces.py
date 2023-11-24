@@ -37,14 +37,14 @@ class TestGetInterfaceAddress(unittest.TestCase):
     def test_no_ipv4(self):
         """An interface with no IPv4 entries raises :exc:`ValueError`"""
         with mock.patch('netifaces.ifaddresses', return_value={
-            netifaces.AF_LINK: [{'addr': 'de:ad:be:ef:ca:fe', 'broadcast': 'ff:ff:ff:ff:ff:ff'}]
+            netifaces.AF_PACKET: [{'addr': 'de:ad:be:ef:ca:fe', 'broadcast': 'ff:ff:ff:ff:ff:ff'}]
         }):
             with self.assertRaises(ValueError):
                 get_interface_address('wlan1')
 
     def test_valid(self):
         with mock.patch('netifaces.ifaddresses', return_value={
-            netifaces.AF_LINK: [{'addr': 'de:ad:be:ef:ca:fe', 'broadcast': 'ff:ff:ff:ff:ff:ff'}],
+            netifaces.AF_PACKET: [{'addr': 'de:ad:be:ef:ca:fe', 'broadcast': 'ff:ff:ff:ff:ff:ff'}],
             netifaces.AF_INET: [{'addr': '192.168.1.1', 'broadcast': '192.168.1.255',
                                  'netmask': '255.255.255.0'}]
         }) as m:

@@ -52,7 +52,7 @@ def restart_process():
                         # time we try to change the flags on it.
                         pass
     except OSError:
-        logging.warn('Could not read /proc/self/fd')
+        _logger.warning('Could not read /proc/self/fd')
     # Ensure any logging gets properly flushed
     sys.stdout.flush()
     sys.stderr.flush()
