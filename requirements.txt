@@ -1,6 +1,17 @@
 -d https://raw.githubusercontent.com/ska-sa/katsdpdockerbase/master/docker-base-build/base-requirements.txt
 
+aiohttp==3.9.3            # via aiomonitor
+aioconsole==0.7.0         # via aiomonitor
 aiomonitor==0.7.0
+backports-strenum==1.3.1  # via aiomonitor
+click==8.1.7              # via aiomonitor
+janus==1.0.0              # via aiomonitor
+jinja2==3.1.3             # via aiomonitor
+markupsafe==2.1.5         # via jinja2
 netifaces
+prompt-toolkit==3.0.43    # via aiomonitor
 pygelf
+trafaret==2.1.1           # via aiomonitor
+wcwidth==0.2.13           # via prompt-toolkit
+
 katsdptelstate @ git+https://github.com/ska-sa/katsdptelstate
