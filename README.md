@@ -16,6 +16,14 @@ subsystem of the MeerKAT radio telescope. It includes
 
 ## Changelog
 
+### 1.3
+
+- Packaging modernisation (#34)
+- Drop some old Python 2 workarounds (#34)
+- Switch testing to pytest (#34)
+- Fix flake8 for pre-commit
+- Add `--aiomonitor-webui-port` command-line option (#35)
+
 ### 1.2
 
 - Resolve logging destination at startup (#33)
