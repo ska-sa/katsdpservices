@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (c) 2017-2020, 2022, National Research Foundation (SARAO)
+# Copyright (c) 2017-2020, 2022, 2024 National Research Foundation (SARAO)
 #
 # Licensed under the BSD 3-Clause License (the "License"); you may not use
 # this file except in compliance with the License. You may obtain a copy
@@ -29,7 +29,7 @@ class TestStartAiomonitor(unittest.TestCase):
     def setUp(self):
         self.parser = ArgumentParser()
         add_aiomonitor_arguments(self.parser)
-        patcher = mock.patch('aiomonitor.start_monitor')
+        patcher = mock.patch('aiomonitor.start_monitor', autospec=True)
         self.mock_start = patcher.start()
         self.addCleanup(patcher.stop)
         self.loop = asyncio.new_event_loop()
@@ -49,6 +49,7 @@ class TestStartAiomonitor(unittest.TestCase):
             loop=self.loop, host=aiomonitor.MONITOR_HOST,
             port=aiomonitor.MONITOR_PORT,
             console_port=aiomonitor.CONSOLE_PORT,
+            webui_port=aiomonitor.MONITOR_WEBUI_PORT,
             locals=locals_)
 
     def test_explicit(self):
@@ -56,6 +57,7 @@ class TestStartAiomonitor(unittest.TestCase):
             ['--aiomonitor',
              '--aiomonitor-host', 'example.com',
              '--aiomonitor-port', '1234',
+             '--aiomonitor-webui-port', '4321',
              '--aioconsole-port', '2345'])
         locals_ = {'hello': 'world'}
         with start_aiomonitor(self.loop, args, locals_):
@@ -64,4 +66,5 @@ class TestStartAiomonitor(unittest.TestCase):
             loop=self.loop, host='example.com',
             port=1234,
             console_port=2345,
+            webui_port=4321,
             locals=locals_)
