@@ -122,16 +122,16 @@ class _TimestampFilter(logging.Filter):
 
     The timestamp is formatted according to ISO8601 with microsecond
     precision. This is to work around the lack of native sub-ms
-    timestamp support in logstash
+    timestamp support in logstash 7.x
     (https://github.com/elastic/logstash/issues/10822).
 
-    While Elasticsearch supports nanosecond timestamps, Python versions
-    before 3.7 can't do better than about 200ns precision because they
-    represent time as 64-bit float seconds since the UNIX epoch, and
-    it doesn't seem worth the effort to go finer than microseconds.
+    While Elasticsearch supports nanosecond timestamps, LogRecord
+    stores the creation time as a 64-bit float so is limited to about 200ns
+    precision, and it doesn't seem worth the effort to go finer than
+    microseconds.
     """
     def filter(self, record):
-        dt = datetime.datetime.utcfromtimestamp(record.created)
+        dt = datetime.datetime.fromtimestamp(record.created, tz=datetime.timezone.utc)
         record.timestamp_precise = dt.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         return True
 

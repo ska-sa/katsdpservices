@@ -16,17 +16,18 @@
 
 """Tests for :mod:`katsdpservices.logging`"""
 
-import time
+import io
+import json
 import logging
-import socket
 import os
 import re
-import io
 import signal
-import json
+import socket
+import sys
+import time
+import unittest
 import zlib
 from contextlib import closing
-import unittest
 from unittest import mock
 
 import katsdpservices
@@ -152,6 +153,8 @@ class TestLogging(unittest.TestCase):
             expected["_hello"] = "world"
             expected["_number"] = 3
         expected["_stack_info"] = None
+        if sys.version_info >= (3, 12, 0):
+            expected["_taskName"] = None
         self.assertEqual(data, expected)
 
     def test_gelf_basic(self):
