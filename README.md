@@ -16,6 +16,13 @@ subsystem of the MeerKAT radio telescope. It includes
 
 ## Changelog
 
+### 1.4
+
+- Remove use of deprecated `datetime.utcfromtimestamp` method (#38)
+- Fix unit tests on Python 3.12 (#38)
+- Run tests against requirements from
+  [katsdpdockerbase](https://github.com/ska-sa/katsdpdockerbase) (#37)
+
 ### 1.3
 
 - Packaging modernisation (#34)
