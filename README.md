@@ -11,7 +11,7 @@ subsystem of the MeerKAT radio telescope. It includes
 - Signal handlers to restart the process and adjust log levels.
 - Utilities to simplify integration with
   [aiomonitor](https://github.com/aio-libs/aiomonitor).
-- A simple wrapper around [netifaces](https://github.com/al45tair/netifaces) to
+- A simple wrapper around [netifaces-plus](https://github.com/tsukumijima/netifaces-plus) to
   get the IP address of a network interface.
 
 ## Changelog
