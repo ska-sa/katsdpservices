@@ -16,7 +16,7 @@
 
 """Simple utility functions to access information about network interfaces.
 
-This is a simple wrapper around :mod:`netifaces`.
+This is a simple wrapper around :mod:`netifaces-plus`.
 """
 
 import netifaces
