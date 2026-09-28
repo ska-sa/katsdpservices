@@ -18,8 +18,7 @@ subsystem of the MeerKAT radio telescope. It includes
 
 ### 1.5
 
-- Migrated the network interface utility dependency from `netifaces` to `netifaces-plus`.
-- Updated core package metadata (`setup.cfg`), `requirements.txt`, and documentation (`README.md`, docstrings) to reflect the new dependency.
+- Migrate the network interface utility dependency from `netifaces` to `netifaces-plus` (#41).
 
 ### 1.4
 
