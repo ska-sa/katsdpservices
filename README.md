@@ -16,6 +16,10 @@ subsystem of the MeerKAT radio telescope. It includes
 
 ## Changelog
 
+### 1.5
+
+- Migrate the network interface utility dependency from `netifaces` to `netifaces-plus` (#41).
+
 ### 1.4
 
 - Remove use of deprecated `datetime.utcfromtimestamp` method (#38)
